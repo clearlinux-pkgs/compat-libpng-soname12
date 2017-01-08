@@ -6,7 +6,7 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.57
-Release  : 1
+Release  : 2
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Summary  : Loads and saves PNG files
@@ -89,7 +89,7 @@ popd
 
 %build
 export LANG=C
-export SOURCE_DATE_EPOCH=1483847044
+export SOURCE_DATE_EPOCH=1483847230
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -143,35 +143,35 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 
 %files
 %defattr(-,root,root,-)
-/usr/lib64/avx2/libpng.a
-/usr/lib64/avx2/libpng12.a
+%exclude /usr/lib64/avx2/libpng.a
+%exclude /usr/lib64/avx2/libpng12.a
 
 %files bin
 %defattr(-,root,root,-)
 %exclude /usr/bin/libpng-config
-/usr/bin/libpng12-config
+%exclude /usr/bin/libpng12-config
 
 %files dev
 %defattr(-,root,root,-)
+%exclude /usr/include/libpng12/png.h
+%exclude /usr/include/libpng12/pngconf.h
 %exclude /usr/include/png.h
 %exclude /usr/include/pngconf.h
+%exclude /usr/lib64/avx2/libpng.so
+%exclude /usr/lib64/avx2/libpng12.so
 %exclude /usr/lib64/libpng.so
+%exclude /usr/lib64/libpng12.so
 %exclude /usr/lib64/pkgconfig/libpng.pc
-/usr/include/libpng12/png.h
-/usr/include/libpng12/pngconf.h
-/usr/lib64/avx2/libpng.so
-/usr/lib64/avx2/libpng12.so
-/usr/lib64/libpng12.so
-/usr/lib64/pkgconfig/libpng12.pc
+%exclude /usr/lib64/pkgconfig/libpng12.pc
 
 %files dev32
 %defattr(-,root,root,-)
 %exclude /usr/lib32/libpng.so
+%exclude /usr/lib32/libpng12.so
 %exclude /usr/lib32/pkgconfig/32libpng.pc
+%exclude /usr/lib32/pkgconfig/32libpng12.pc
 %exclude /usr/lib32/pkgconfig/libpng.pc
-/usr/lib32/libpng12.so
-/usr/lib32/pkgconfig/32libpng12.pc
-/usr/lib32/pkgconfig/libpng12.pc
+%exclude /usr/lib32/pkgconfig/libpng12.pc
 
 %files doc
 %defattr(-,root,root,-)

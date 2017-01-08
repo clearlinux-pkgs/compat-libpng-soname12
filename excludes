@@ -110,3 +110,15 @@
 /usr/lib64/libpng16.so.16.28.0
 /usr/lib32/libpng16.so.16
 /usr/lib32/libpng16.so.16.28.0
+/usr/lib32/libpng12.so
+/usr/lib32/pkgconfig/32libpng12.pc
+/usr/lib32/pkgconfig/libpng12.pc
+/usr/include/libpng12/png.h
+/usr/include/libpng12/pngconf.h
+/usr/lib64/avx2/libpng.so
+/usr/lib64/avx2/libpng12.so
+/usr/lib64/libpng12.so
+/usr/lib64/pkgconfig/libpng12.pc
+/usr/bin/libpng12-config
+/usr/lib64/avx2/libpng.a
+/usr/lib64/avx2/libpng12.a
