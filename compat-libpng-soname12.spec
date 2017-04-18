@@ -135,16 +135,16 @@ export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-se
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
 make clean
-%configure --disable-static--enable-intel-sse --libdir=/usr/lib64/avx2
+%configure --disable-static--enable-intel-sse --libdir=/usr/lib64/haswell
 make V=1  %{?_smp_mflags}
 make DESTDIR=%{buildroot} install-libLTLIBRARIES
-rm -f %{buildroot}/usr/lib64/avx2/*.la
-rm -f %{buildroot}/usr/lib64/avx2/*.lo
+rm -f %{buildroot}/usr/lib64/haswell/*.la
+rm -f %{buildroot}/usr/lib64/haswell/*.lo
 
 %files
 %defattr(-,root,root,-)
-%exclude /usr/lib64/avx2/libpng.a
-%exclude /usr/lib64/avx2/libpng12.a
+%exclude /usr/lib64/haswell/libpng.a
+%exclude /usr/lib64/haswell/libpng12.a
 
 %files bin
 %defattr(-,root,root,-)
@@ -157,8 +157,8 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 %exclude /usr/include/libpng12/pngconf.h
 %exclude /usr/include/png.h
 %exclude /usr/include/pngconf.h
-%exclude /usr/lib64/avx2/libpng.so
-%exclude /usr/lib64/avx2/libpng12.so
+%exclude /usr/lib64/haswell/libpng.so
+%exclude /usr/lib64/haswell/libpng12.so
 %exclude /usr/lib64/libpng.so
 %exclude /usr/lib64/libpng12.so
 %exclude /usr/lib64/pkgconfig/libpng.pc
@@ -181,10 +181,10 @@ rm -f %{buildroot}/usr/lib64/avx2/*.lo
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/avx2/libpng.so.3
-/usr/lib64/avx2/libpng.so.3.57.0
-/usr/lib64/avx2/libpng12.so.0
-/usr/lib64/avx2/libpng12.so.0.57.0
+/usr/lib64/haswell/libpng.so.3
+/usr/lib64/haswell/libpng.so.3.57.0
+/usr/lib64/haswell/libpng12.so.0
+/usr/lib64/haswell/libpng12.so.0.57.0
 /usr/lib64/libpng.so.3
 /usr/lib64/libpng.so.3.57.0
 /usr/lib64/libpng12.so.0
