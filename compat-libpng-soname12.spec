@@ -6,9 +6,10 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.57
-Release  : 5
+Release  : 6
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
+Source99 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng
@@ -88,15 +89,18 @@ cp -a libpng-1.2.57 build32
 popd
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1483847230
+export SOURCE_DATE_EPOCH=1503526191
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition "
 %configure --disable-static --enable-intel-sse
 make V=1  %{?_smp_mflags}
 
@@ -112,10 +116,11 @@ popd
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
+export SOURCE_DATE_EPOCH=1503526191
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -130,10 +135,10 @@ popd
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition -mavx2 "
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -march=haswell "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -march=haswell "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -march=haswell "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-semantic-interposition -march=haswell "
 make clean
 %configure --disable-static--enable-intel-sse --libdir=/usr/lib64/haswell
 make V=1  %{?_smp_mflags}
@@ -143,8 +148,8 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 
 %files
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/libpng.a
-%exclude /usr/lib64/haswell/libpng12.a
+/usr/lib64/haswell/libpng.a
+/usr/lib64/haswell/libpng12.a
 
 %files bin
 %defattr(-,root,root,-)
@@ -157,12 +162,12 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 %exclude /usr/include/libpng12/pngconf.h
 %exclude /usr/include/png.h
 %exclude /usr/include/pngconf.h
-%exclude /usr/lib64/haswell/libpng.so
-%exclude /usr/lib64/haswell/libpng12.so
 %exclude /usr/lib64/libpng.so
 %exclude /usr/lib64/libpng12.so
 %exclude /usr/lib64/pkgconfig/libpng.pc
 %exclude /usr/lib64/pkgconfig/libpng12.pc
+/usr/lib64/haswell/libpng.so
+/usr/lib64/haswell/libpng12.so
 
 %files dev32
 %defattr(-,root,root,-)
