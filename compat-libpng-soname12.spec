@@ -6,7 +6,7 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.57
-Release  : 7
+Release  : 8
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source99 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
@@ -93,7 +93,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1503526191
+export SOURCE_DATE_EPOCH=1503608911
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -120,7 +120,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1503526191
+export SOURCE_DATE_EPOCH=1503608911
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -148,8 +148,8 @@ rm -f %{buildroot}/usr/lib64/haswell/*.lo
 
 %files
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libpng.a
-/usr/lib64/haswell/libpng12.a
+%exclude /usr/lib64/haswell/libpng.a
+%exclude /usr/lib64/haswell/libpng12.a
 
 %files bin
 %defattr(-,root,root,-)
