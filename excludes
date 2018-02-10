@@ -90,7 +90,7 @@
 /usr/include/png.h
 /usr/include/pngconf.h
 /usr/include/pnglibconf.h
-/usr/lib64/avx2/libpng16.so
+/usr/lib64/haswell/libpng16.so
 /usr/lib64/libpng.so
 /usr/lib64/libpng16.so
 /usr/lib64/pkgconfig/libpng.pc
@@ -104,8 +104,8 @@
 /usr/share/man/man3/libpng.3
 /usr/share/man/man3/libpngpf.3
 /usr/share/man/man5/png.5
-/usr/lib64/avx2/libpng16.so.16
-/usr/lib64/avx2/libpng16.so.16.28.0
+/usr/lib64/haswell/libpng16.so.16
+/usr/lib64/haswell/libpng16.so.16.28.0
 /usr/lib64/libpng16.so.16
 /usr/lib64/libpng16.so.16.28.0
 /usr/lib32/libpng16.so.16
@@ -115,8 +115,8 @@
 /usr/lib32/pkgconfig/libpng12.pc
 /usr/include/libpng12/png.h
 /usr/include/libpng12/pngconf.h
-/usr/lib64/avx2/libpng.so
-/usr/lib64/avx2/libpng12.so
+/usr/lib64/haswell/libpng.so
+/usr/lib64/haswell/libpng12.so
 /usr/lib64/haswell/libpng.so
 /usr/lib64/haswell/libpng12.so
 /usr/lib64/libpng12.so
@@ -126,3 +126,7 @@
 /usr/lib64/haswell/libpng12.a
 /usr/lib64/haswell/libpng.a
 /usr/lib64/haswell/libpng12.a
+/usr/bin/haswell/libpng-config
+/usr/bin/haswell/libpng12-config
+/usr/lib64/haswell/pkgconfig/libpng.pc
+/usr/lib64/haswell/pkgconfig/libpng12.pc
