@@ -117,8 +117,12 @@
 /usr/include/libpng12/pngconf.h
 /usr/lib64/avx2/libpng.so
 /usr/lib64/avx2/libpng12.so
+/usr/lib64/haswell/libpng.so
+/usr/lib64/haswell/libpng12.so
 /usr/lib64/libpng12.so
 /usr/lib64/pkgconfig/libpng12.pc
 /usr/bin/libpng12-config
+/usr/lib64/haswell/libpng.a
+/usr/lib64/haswell/libpng12.a
 /usr/lib64/haswell/libpng.a
 /usr/lib64/haswell/libpng12.a
