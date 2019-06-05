@@ -6,7 +6,7 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.57
-Release  : 15
+Release  : 16
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source99 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
