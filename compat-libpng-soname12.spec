@@ -6,17 +6,15 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.57
-Release  : 16
+Release  : 17
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
-Source99 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
+Source1 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng
-Requires: compat-libpng-soname12-bin
-Requires: compat-libpng-soname12-lib
-Requires: compat-libpng-soname12-license
-Requires: compat-libpng-soname12-man
+Requires: compat-libpng-soname12-lib = %{version}-%{release}
+Requires: compat-libpng-soname12-license = %{version}-%{release}
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -29,42 +27,10 @@ BuildRequires : zlib-dev32
 See the note about version numbers near the top of png.h
 See INSTALL for instructions on how to install libpng.
 
-%package bin
-Summary: bin components for the compat-libpng-soname12 package.
-Group: Binaries
-Requires: compat-libpng-soname12-license
-Requires: compat-libpng-soname12-man
-
-%description bin
-bin components for the compat-libpng-soname12 package.
-
-
-%package dev
-Summary: dev components for the compat-libpng-soname12 package.
-Group: Development
-Requires: compat-libpng-soname12-lib
-Requires: compat-libpng-soname12-bin
-Provides: compat-libpng-soname12-devel
-
-%description dev
-dev components for the compat-libpng-soname12 package.
-
-
-%package dev32
-Summary: dev32 components for the compat-libpng-soname12 package.
-Group: Default
-Requires: compat-libpng-soname12-lib32
-Requires: compat-libpng-soname12-bin
-Requires: compat-libpng-soname12-dev
-
-%description dev32
-dev32 components for the compat-libpng-soname12 package.
-
-
 %package lib
 Summary: lib components for the compat-libpng-soname12 package.
 Group: Libraries
-Requires: compat-libpng-soname12-license
+Requires: compat-libpng-soname12-license = %{version}-%{release}
 
 %description lib
 lib components for the compat-libpng-soname12 package.
@@ -73,7 +39,7 @@ lib components for the compat-libpng-soname12 package.
 %package lib32
 Summary: lib32 components for the compat-libpng-soname12 package.
 Group: Default
-Requires: compat-libpng-soname12-license
+Requires: compat-libpng-soname12-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the compat-libpng-soname12 package.
@@ -85,14 +51,6 @@ Group: Default
 
 %description license
 license components for the compat-libpng-soname12 package.
-
-
-%package man
-Summary: man components for the compat-libpng-soname12 package.
-Group: Default
-
-%description man
-man components for the compat-libpng-soname12 package.
 
 
 %prep
@@ -108,8 +66,9 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1531419339
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1566347823
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -122,9 +81,10 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
 %configure --disable-static --enable-intel-sse   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -133,23 +93,27 @@ pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
-%configure --disable-static --enable-intel-sse   --libdir=/usr/lib64/haswell
+%configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+cd ../buildavx2;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1531419339
+export SOURCE_DATE_EPOCH=1566347823
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/compat-libpng-soname12
-cp LICENSE %{buildroot}/usr/share/doc/compat-libpng-soname12/LICENSE
-cp contrib/gregbook/COPYING %{buildroot}/usr/share/doc/compat-libpng-soname12/contrib_gregbook_COPYING
-cp contrib/gregbook/LICENSE %{buildroot}/usr/share/doc/compat-libpng-soname12/contrib_gregbook_LICENSE
+mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
+cp LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/LICENSE
+cp contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_COPYING
+cp contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_LICENSE
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -160,39 +124,34 @@ popd
 fi
 popd
 pushd ../buildavx2/
-%make_install
+%make_install_avx2
 popd
 %make_install
+## Remove excluded files
+rm -f %{buildroot}/usr/bin/libpng-config
+rm -f %{buildroot}/usr/bin/libpng12-config
+rm -f %{buildroot}/usr/include/libpng12/png.h
+rm -f %{buildroot}/usr/include/libpng12/pngconf.h
+rm -f %{buildroot}/usr/include/png.h
+rm -f %{buildroot}/usr/include/pngconf.h
+rm -f %{buildroot}/usr/lib32/libpng.so
+rm -f %{buildroot}/usr/lib32/libpng12.so
+rm -f %{buildroot}/usr/lib32/pkgconfig/32libpng.pc
+rm -f %{buildroot}/usr/lib32/pkgconfig/32libpng12.pc
+rm -f %{buildroot}/usr/lib32/pkgconfig/libpng.pc
+rm -f %{buildroot}/usr/lib32/pkgconfig/libpng12.pc
+rm -f %{buildroot}/usr/lib64/haswell/libpng.so
+rm -f %{buildroot}/usr/lib64/haswell/libpng12.so
+rm -f %{buildroot}/usr/lib64/libpng.so
+rm -f %{buildroot}/usr/lib64/libpng12.so
+rm -f %{buildroot}/usr/lib64/pkgconfig/libpng.pc
+rm -f %{buildroot}/usr/lib64/pkgconfig/libpng12.pc
+rm -f %{buildroot}/usr/share/man/man3/libpng.3
+rm -f %{buildroot}/usr/share/man/man3/libpngpf.3
+rm -f %{buildroot}/usr/share/man/man5/png.5
 
 %files
 %defattr(-,root,root,-)
-
-%files bin
-%defattr(-,root,root,-)
-%exclude /usr/bin/libpng-config
-%exclude /usr/bin/libpng12-config
-
-%files dev
-%defattr(-,root,root,-)
-%exclude /usr/include/libpng12/png.h
-%exclude /usr/include/libpng12/pngconf.h
-%exclude /usr/include/png.h
-%exclude /usr/include/pngconf.h
-%exclude /usr/lib64/haswell/libpng.so
-%exclude /usr/lib64/haswell/libpng12.so
-%exclude /usr/lib64/libpng.so
-%exclude /usr/lib64/libpng12.so
-%exclude /usr/lib64/pkgconfig/libpng.pc
-%exclude /usr/lib64/pkgconfig/libpng12.pc
-
-%files dev32
-%defattr(-,root,root,-)
-%exclude /usr/lib32/libpng.so
-%exclude /usr/lib32/libpng12.so
-%exclude /usr/lib32/pkgconfig/32libpng.pc
-%exclude /usr/lib32/pkgconfig/32libpng12.pc
-%exclude /usr/lib32/pkgconfig/libpng.pc
-%exclude /usr/lib32/pkgconfig/libpng12.pc
 
 %files lib
 %defattr(-,root,root,-)
@@ -213,13 +172,7 @@ popd
 /usr/lib32/libpng12.so.0.57.0
 
 %files license
-%defattr(-,root,root,-)
-%exclude /usr/share/doc/compat-libpng-soname12/LICENSE
-%exclude /usr/share/doc/compat-libpng-soname12/contrib_gregbook_COPYING
-%exclude /usr/share/doc/compat-libpng-soname12/contrib_gregbook_LICENSE
-
-%files man
-%defattr(-,root,root,-)
-%exclude /usr/share/man/man3/libpng.3
-%exclude /usr/share/man/man3/libpngpf.3
-%exclude /usr/share/man/man5/png.5
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/compat-libpng-soname12/LICENSE
+/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_COPYING
+/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_LICENSE
