@@ -5,11 +5,11 @@
 # Source0 file verified with key 0xF54984BFA16C640F (glennrp+bmo@gmail.com)
 #
 Name     : compat-libpng-soname12
-Version  : 1.2.57
-Release  : 17
-URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
-Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz
-Source1 : http://downloads.sourceforge.net/libpng/libpng-1.2.57.tar.xz.asc
+Version  : 1.2.59
+Release  : 18
+URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
+Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
+Source1 : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng
@@ -54,12 +54,12 @@ license components for the compat-libpng-soname12 package.
 
 
 %prep
-%setup -q -n libpng-1.2.57
+%setup -q -n libpng-1.2.59
 pushd ..
-cp -a libpng-1.2.57 build32
+cp -a libpng-1.2.59 build32
 popd
 pushd ..
-cp -a libpng-1.2.57 buildavx2
+cp -a libpng-1.2.59 buildavx2
 popd
 
 %build
@@ -67,7 +67,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1566347823
+export SOURCE_DATE_EPOCH=1566347977
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -108,7 +108,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1566347823
+export SOURCE_DATE_EPOCH=1566347977
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
 cp LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/LICENSE
@@ -156,20 +156,20 @@ rm -f %{buildroot}/usr/share/man/man5/png.5
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/haswell/libpng.so.3
-/usr/lib64/haswell/libpng.so.3.57.0
+/usr/lib64/haswell/libpng.so.3.59.0
 /usr/lib64/haswell/libpng12.so.0
-/usr/lib64/haswell/libpng12.so.0.57.0
+/usr/lib64/haswell/libpng12.so.0.59.0
 /usr/lib64/libpng.so.3
-/usr/lib64/libpng.so.3.57.0
+/usr/lib64/libpng.so.3.59.0
 /usr/lib64/libpng12.so.0
-/usr/lib64/libpng12.so.0.57.0
+/usr/lib64/libpng12.so.0.59.0
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libpng.so.3
-/usr/lib32/libpng.so.3.57.0
+/usr/lib32/libpng.so.3.59.0
 /usr/lib32/libpng12.so.0
-/usr/lib32/libpng12.so.0.57.0
+/usr/lib32/libpng12.so.0.59.0
 
 %files license
 %defattr(0644,root,root,0755)

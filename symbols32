@@ -6,6 +6,7 @@ libpng.so.3:png_calculate_crc
 libpng.so.3:png_calloc
 libpng.so.3:png_check_IHDR
 libpng.so.3:png_check_cHRM_fixed
+libpng.so.3:png_check_chunk_length
 libpng.so.3:png_check_chunk_name
 libpng.so.3:png_check_keyword
 libpng.so.3:png_check_sig
