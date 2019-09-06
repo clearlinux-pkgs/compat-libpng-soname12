@@ -6,7 +6,7 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.59
-Release  : 18
+Release  : 19
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
 Source1 : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
@@ -22,6 +22,8 @@ BuildRequires : gdb
 BuildRequires : glibc-dev32
 BuildRequires : glibc-libc32
 BuildRequires : zlib-dev32
+# Suppress generation of debuginfo
+%global debug_package %{nil}
 
 %description
 See the note about version numbers near the top of png.h
@@ -67,7 +69,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1566347977
+export SOURCE_DATE_EPOCH=1567813857
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -82,9 +84,9 @@ make  %{?_smp_mflags}
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --enable-intel-sse   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
@@ -108,7 +110,7 @@ cd ../buildavx2;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1566347977
+export SOURCE_DATE_EPOCH=1567813857
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
 cp LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/LICENSE
