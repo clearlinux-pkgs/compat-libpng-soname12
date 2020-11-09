@@ -6,10 +6,10 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.59
-Release  : 21
+Release  : 22
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
-Source1 : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
+Source1  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng
@@ -57,6 +57,7 @@ license components for the compat-libpng-soname12 package.
 
 %prep
 %setup -q -n libpng-1.2.59
+cd %{_builddir}/libpng-1.2.59
 pushd ..
 cp -a libpng-1.2.59 build32
 popd
@@ -69,14 +70,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1567813857
+export SOURCE_DATE_EPOCH=1604886902
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 %configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
@@ -94,6 +95,8 @@ unset PKG_CONFIG_PATH
 pushd ../buildavx2/
 export CFLAGS="$CFLAGS -m64 -march=haswell"
 export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
+export FFLAGS="$FFLAGS -m64 -march=haswell"
+export FCFLAGS="$FCFLAGS -m64 -march=haswell"
 export LDFLAGS="$LDFLAGS -m64 -march=haswell"
 %configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
@@ -103,19 +106,19 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check || :
+make %{?_smp_mflags} check || :
 cd ../build32;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 cd ../buildavx2;
-make VERBOSE=1 V=1 %{?_smp_mflags} check || : || :
+make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1567813857
+export SOURCE_DATE_EPOCH=1604886902
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
-cp LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/LICENSE
-cp contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_COPYING
-cp contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_LICENSE
+cp %{_builddir}/libpng-1.2.59/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/7d28be2ecb314989578cde33bddb47e208006ed9
+cp %{_builddir}/libpng-1.2.59/contrib/gregbook/COPYING %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/dfac199a7539a404407098a2541b9482279f690d
+cp %{_builddir}/libpng-1.2.59/contrib/gregbook/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -175,6 +178,6 @@ rm -f %{buildroot}/usr/share/man/man5/png.5
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/compat-libpng-soname12/LICENSE
-/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_COPYING
-/usr/share/package-licenses/compat-libpng-soname12/contrib_gregbook_LICENSE
+/usr/share/package-licenses/compat-libpng-soname12/7d28be2ecb314989578cde33bddb47e208006ed9
+/usr/share/package-licenses/compat-libpng-soname12/aa4b9207aaff26bc16c562d6cd766a9eed49af1e
+/usr/share/package-licenses/compat-libpng-soname12/dfac199a7539a404407098a2541b9482279f690d
