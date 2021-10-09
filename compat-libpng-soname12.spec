@@ -6,7 +6,7 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.59
-Release  : 22
+Release  : 23
 URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
 Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
 Source1  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
@@ -70,20 +70,20 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1604886902
+export SOURCE_DATE_EPOCH=1633738319
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$FFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
 %configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
 
 pushd ../build32/
-export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig:/usr/share/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
 export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
 export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
@@ -93,11 +93,11 @@ make  %{?_smp_mflags}
 popd
 unset PKG_CONFIG_PATH
 pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=haswell"
-export CXXFLAGS="$CXXFLAGS -m64 -march=haswell"
-export FFLAGS="$FFLAGS -m64 -march=haswell"
-export FCFLAGS="$FCFLAGS -m64 -march=haswell"
-export LDFLAGS="$LDFLAGS -m64 -march=haswell"
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
 %configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
 popd
@@ -113,7 +113,7 @@ cd ../buildavx2;
 make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1604886902
+export SOURCE_DATE_EPOCH=1633738319
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
 cp %{_builddir}/libpng-1.2.59/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/7d28be2ecb314989578cde33bddb47e208006ed9
@@ -127,9 +127,16 @@ pushd %{buildroot}/usr/lib32/pkgconfig
 for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
+if [ -d %{buildroot}/usr/share/pkgconfig ]
+then
+pushd %{buildroot}/usr/share/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
 popd
 pushd ../buildavx2/
-%make_install_avx2
+%make_install_v3
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 popd
 %make_install
 ## Remove excluded files
@@ -145,12 +152,13 @@ rm -f %{buildroot}/usr/lib32/pkgconfig/32libpng.pc
 rm -f %{buildroot}/usr/lib32/pkgconfig/32libpng12.pc
 rm -f %{buildroot}/usr/lib32/pkgconfig/libpng.pc
 rm -f %{buildroot}/usr/lib32/pkgconfig/libpng12.pc
-rm -f %{buildroot}/usr/lib64/haswell/libpng.so
-rm -f %{buildroot}/usr/lib64/haswell/libpng12.so
 rm -f %{buildroot}/usr/lib64/libpng.so
 rm -f %{buildroot}/usr/lib64/libpng12.so
 rm -f %{buildroot}/usr/lib64/pkgconfig/libpng.pc
 rm -f %{buildroot}/usr/lib64/pkgconfig/libpng12.pc
+rm -f %{buildroot}/usr/share/clear/filemap/filemap-compat-libpng-soname12
+rm -f %{buildroot}/usr/share/clear/optimized-elf/lib96b8e1930238a22ef1756fd7fdd665d10869941a2948956dd9c9935badc9d845
+rm -f %{buildroot}/usr/share/clear/optimized-elf/libe9c9df1b707aa5f48ccc7e28290ae04234c86e2c32059af73b714ad5f1d9c29f
 rm -f %{buildroot}/usr/share/man/man3/libpng.3
 rm -f %{buildroot}/usr/share/man/man3/libpngpf.3
 rm -f %{buildroot}/usr/share/man/man5/png.5
@@ -160,10 +168,6 @@ rm -f %{buildroot}/usr/share/man/man5/png.5
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/haswell/libpng.so.3
-/usr/lib64/haswell/libpng.so.3.59.0
-/usr/lib64/haswell/libpng12.so.0
-/usr/lib64/haswell/libpng12.so.0.59.0
 /usr/lib64/libpng.so.3
 /usr/lib64/libpng.so.3.59.0
 /usr/lib64/libpng12.so.0
