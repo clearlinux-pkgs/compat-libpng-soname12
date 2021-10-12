@@ -6,10 +6,10 @@
 #
 Name     : compat-libpng-soname12
 Version  : 1.2.59
-Release  : 24
+Release  : 25
 URL      : https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
 Source0  : https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
-Source1  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
+Source1  : https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
 License  : GPL-2.0 Libpng
@@ -61,24 +61,21 @@ cd %{_builddir}/libpng-1.2.59
 pushd ..
 cp -a libpng-1.2.59 build32
 popd
-pushd ..
-cp -a libpng-1.2.59 buildavx2
-popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1633738319
+export SOURCE_DATE_EPOCH=1634004934
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FCFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export FFLAGS="$FFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
-export CXXFLAGS="$CXXFLAGS -O3 -Ofast -falign-functions=32 -ffat-lto-objects -flto=auto -fno-semantic-interposition -mprefer-vector-width=256 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %configure --disable-static --enable-intel-sse
 make  %{?_smp_mflags}
 
@@ -91,16 +88,6 @@ export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static --enable-intel-sse   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
-unset PKG_CONFIG_PATH
-pushd ../buildavx2/
-export CFLAGS="$CFLAGS -m64 -march=x86-64-v3"
-export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3"
-export FFLAGS="$FFLAGS -m64 -march=x86-64-v3"
-export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
-export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
-%configure --disable-static --enable-intel-sse
-make  %{?_smp_mflags}
-popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
@@ -109,11 +96,9 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check || :
 cd ../build32;
 make %{?_smp_mflags} check || : || :
-cd ../buildavx2;
-make %{?_smp_mflags} check || : || :
 
 %install
-export SOURCE_DATE_EPOCH=1633738319
+export SOURCE_DATE_EPOCH=1634004934
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/compat-libpng-soname12
 cp %{_builddir}/libpng-1.2.59/LICENSE %{buildroot}/usr/share/package-licenses/compat-libpng-soname12/7d28be2ecb314989578cde33bddb47e208006ed9
@@ -134,10 +119,6 @@ for i in *.pc ; do ln -s $i 32$i ; done
 popd
 fi
 popd
-pushd ../buildavx2/
-%make_install_v3
-/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot}/usr/share/clear/optimized-elf/ %{buildroot}/usr/share/clear/filemap/filemap-%{name}
-popd
 %make_install
 ## Remove excluded files
 rm -f %{buildroot}/usr/bin/libpng-config
@@ -156,9 +137,6 @@ rm -f %{buildroot}/usr/lib64/libpng.so
 rm -f %{buildroot}/usr/lib64/libpng12.so
 rm -f %{buildroot}/usr/lib64/pkgconfig/libpng.pc
 rm -f %{buildroot}/usr/lib64/pkgconfig/libpng12.pc
-rm -f %{buildroot}/usr/share/clear/filemap/filemap-compat-libpng-soname12
-rm -f %{buildroot}/usr/share/clear/optimized-elf/lib96b8e1930238a22ef1756fd7fdd665d10869941a2948956dd9c9935badc9d845
-rm -f %{buildroot}/usr/share/clear/optimized-elf/libe9c9df1b707aa5f48ccc7e28290ae04234c86e2c32059af73b714ad5f1d9c29f
 rm -f %{buildroot}/usr/share/man/man3/libpng.3
 rm -f %{buildroot}/usr/share/man/man3/libpngpf.3
 rm -f %{buildroot}/usr/share/man/man5/png.5
