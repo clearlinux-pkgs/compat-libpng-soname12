@@ -7,8 +7,8 @@
 Name     : compat-libpng-soname12
 Version  : 1.2.59
 Release  : 24
-URL      : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
-Source0  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz
+URL      : https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
+Source0  : https://sourceforge.net/projects/libpng/files/libpng12/1.2.59/libpng-1.2.59.tar.xz
 Source1  : http://downloads.sourceforge.net/libpng/libpng-1.2.59.tar.xz.asc
 Summary  : Loads and saves PNG files
 Group    : Development/Tools
